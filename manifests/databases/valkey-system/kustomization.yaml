@@ -3,3 +3,4 @@ resources:
   - valkey-system-pvc.yaml
   - valkey-system-deployment.yaml
   - valkey-system-svc.yaml
+  - system-redis-secret.yaml

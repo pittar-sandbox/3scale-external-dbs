@@ -3,3 +3,4 @@ resources:
   - valkey-backend-pvc.yaml
   - valkey-backend-deployment.yaml
   - valkey-backend-svc.yaml
+  - backend-redis-secret.yaml
