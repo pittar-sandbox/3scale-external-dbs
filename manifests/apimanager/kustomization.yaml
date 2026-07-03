@@ -1,0 +1,4 @@
+namespace: 3scale
+
+resources:
+  - apimanager.yaml

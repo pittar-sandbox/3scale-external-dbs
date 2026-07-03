@@ -3,7 +3,16 @@ kind: APIManager
 metadata:
   name: 3scale
 spec:
+  wildcardDomain: apps.ocp.kxllw.sandbox742.opentlc.com
   resourceRequirementsEnabled: false
+  externalComponents:
+    backend:
+      redis: true
+    system:
+      database: true
+      redis: true
+    zync:
+      database: false
   system:
     fileStorage:
       persistentVolumeClaim:
