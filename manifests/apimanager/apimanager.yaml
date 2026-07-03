@@ -3,7 +3,7 @@ kind: APIManager
 metadata:
   name: 3scale
 spec:
-  wildcardDomain: apps.ocp.kxllw.sandbox742.opentlc.com
+  wildcardDomain: apps.<cluster domain>
   resourceRequirementsEnabled: false
   externalComponents:
     backend:
@@ -16,6 +16,6 @@ spec:
   system:
     fileStorage:
       persistentVolumeClaim:
-        storageClassName: gp3-csi
+        storageClassName: efs-csi
     database:
       postgresql: {}
