@@ -1,0 +1,8 @@
+namespace: 3scale
+
+resources:
+  - postgres-pvc.yaml
+  - postgres-secret.yaml
+  - postgres-deploy.yaml
+  - postgres-svc.yaml
+  - 3scale-database-secret.yaml

@@ -1,0 +1,6 @@
+namespace: 3scale
+
+resources:
+  - ../valkey-shared
+  - ../valkey-backend
+  - ../valkey-system

@@ -1,0 +1,2 @@
+resources:
+  - valkey-config.yaml

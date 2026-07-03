@@ -1,0 +1,79 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend-valkey-external
+  labels:
+    app: backend-valkey-external
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: backend-valkey-external
+  template:
+    metadata:
+      labels:
+        deployment: backend-valkey-external
+    spec:
+      restartPolicy: Always
+      serviceAccountName: backend-valkey-external
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      securityContext: {}
+      containers:
+        - resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: '0.1'
+              memory: 1Gi
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #       - container-entrypoint
+          #       - bash
+          #       - '-c'
+          #       - redis-cli set liveness-probe "`date`" | grep OK
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 1
+          #   periodSeconds: 30
+          #   successThreshold: 1
+          #   failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          name: backend-valkey-external
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          env:
+            - name: VALKEY_CONF
+              value: /etc/valkey/valkey.conf
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: backend-valkey-storage-external
+              mountPath: /var/lib/valkey/data
+            - name: valkey-config-external
+              mountPath: /etc/valkey/
+          terminationMessagePolicy: File
+          image: 'registry.redhat.io/rhel9/valkey-8'
+      serviceAccount: backend-valkey-external
+      volumes:
+        - name: backend-valkey-storage-external
+          persistentVolumeClaim:
+            claimName: backend-valkey-storage-external
+        - name: valkey-config-external
+          configMap:
+            name: valkey-config-external
+            items:
+              - key: valkey.conf
+                path: valkey.conf
+            defaultMode: 420
+      dnsPolicy: ClusterFirst
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
